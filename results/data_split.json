@@ -1,0 +1,56 @@
+{
+  "files": 3855,
+  "unreadable": 9,
+  "exact_duplicates": 1925,
+  "label_conflicts": 0,
+  "unique_images": 1921,
+  "n_groups": 8,
+  "largest_group": 391,
+  "groups_with_copies": 8,
+  "mixed_label_groups": 0,
+  "k_neighbours": 20,
+  "min_inliers": 12,
+  "sure_similarity": 0.95,
+  "scans": [
+    {
+      "scan": 0,
+      "images": 280,
+      "label": "notinfected"
+    },
+    {
+      "scan": 1,
+      "images": 276,
+      "label": "notinfected"
+    },
+    {
+      "scan": 2,
+      "images": 391,
+      "label": "notinfected"
+    },
+    {
+      "scan": 3,
+      "images": 195,
+      "label": "notinfected"
+    },
+    {
+      "scan": 4,
+      "images": 192,
+      "label": "infected"
+    },
+    {
+      "scan": 5,
+      "images": 193,
+      "label": "infected"
+    },
+    {
+      "scan": 6,
+      "images": 295,
+      "label": "infected"
+    },
+    {
+      "scan": 7,
+      "images": 99,
+      "label": "infected"
+    }
+  ]
+}

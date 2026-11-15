@@ -1,0 +1,12 @@
+torch>=2.0
+torchvision>=0.15
+numpy
+scipy
+scikit-learn
+opencv-python
+pillow
+matplotlib
+joblib
+flask
+# optional: only needed for tests/test_quantum_equivalence.py (reference circuit)
+pennylane

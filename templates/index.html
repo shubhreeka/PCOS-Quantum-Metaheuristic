@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCOS Diagnostics: Quantum vs Multi-Metaheuristics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>PCOS Dual-Branch Diagnostic Intelligence</h1>
+            <p>Benchmarking Quantum PQC vs. 5 Metaheuristic Classical Algorithms (PSO, GWO, WOA, GA, FA)</p>
+        </header>
+
+        <div class="controls-row">
+            <label style="font-size: 0.9rem; color: var(--text-secondary);">Select Metaheuristic Model:</label>
+            <select class="algo-selector" id="algo-select" onchange="changeAlgorithm()">
+                <option value="PSO">Particle Swarm Optimization (PSO)</option>
+                <option value="GWO">Grey Wolf Optimizer (GWO)</option>
+                <option value="WOA">Whale Optimization Algorithm (WOA)</option>
+                <option value="GA">Genetic Algorithm (GA)</option>
+                <option value="FA">Firefly Algorithm (FA)</option>
+            </select>
+        </div>
+
+        <section class="upload-section">
+            <div class="drop-zone" onclick="document.getElementById('file-input').click()">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                </svg>
+                <p><strong>Click to upload</strong> or drag & drop ultrasound scan</p>
+                <input type="file" id="file-input" accept="image/*" style="display: none;">
+            </div>
+
+            <div class="preview-pane">
+                <span id="preview-placeholder" style="color: var(--text-secondary); font-size: 0.85rem;">No ultrasound loaded</span>
+                <span class="box-badge" id="box-badge">0 candidate regions</span>
+                <img id="image-preview" alt="Ultrasound Scan Preview">
+            </div>
+
+            <button class="btn-classify" id="btn-classify" disabled onclick="classifyScan()">
+                <span id="btn-text">Execute Dual-Branch Feature Diagnostic</span>
+            </button>
+        </section>
+
+        <div class="dashboard">
+            <!-- QUANTUM -->
+            <div class="card card-q">
+                <div class="card-header">
+                    <h2>Quantum Feature Extraction</h2>
+                    <span class="badge badge-q">PennyLane PQC</span>
+                </div>
+
+                <div class="pred-box">
+                    <div>
+                        <div style="font-size: 0.72rem; color: var(--text-secondary);">DIAGNOSTIC</div>
+                        <div class="pred-status" id="q-live-status">Ready</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.72rem; color: var(--text-secondary);">CONFIDENCE</div>
+                        <div style="font-size: 1.1rem; font-weight: 700;" id="q-live-conf">--%</div>
+                    </div>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat-item stat-q">
+                        <div class="val" id="q-acc">--%</div>
+                        <div class="lbl">Unseen-scan accuracy</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="val" id="q-feats">64</div>
+                        <div class="lbl">Quantum features</div>
+                    </div>
+                </div>
+
+                <div class="section-title">Leave-one-scan-out confusion matrix</div>
+                <div class="cm-grid">
+                    <div class="cm-cell cm-label"></div>
+                    <div class="cm-cell cm-label">Pred: Normal</div>
+                    <div class="cm-cell cm-label">Pred: PCOS</div>
+
+                    <div class="cm-cell cm-label">Actual: Normal</div>
+                    <div class="cm-cell cm-active-q">
+                        <div class="cm-num" id="q-tn">-</div>
+                        <div class="cm-desc">True Negative</div>
+                    </div>
+                    <div class="cm-cell">
+                        <div class="cm-num" id="q-fp">-</div>
+                        <div class="cm-desc">False Positive</div>
+                    </div>
+
+                    <div class="cm-cell cm-label">Actual: PCOS</div>
+                    <div class="cm-cell">
+                        <div class="cm-num" id="q-fn">-</div>
+                        <div class="cm-desc">False Negative</div>
+                    </div>
+                    <div class="cm-cell cm-active-q">
+                        <div class="cm-num" id="q-tp">-</div>
+                        <div class="cm-desc">True Positive</div>
+                    </div>
+                </div>
+
+                <div class="section-title">Diagnostic Metrics</div>
+                <div class="chart-box">
+                    <canvas id="chart-quantum"></canvas>
+                </div>
+            </div>
+
+            <!-- METAHEURISTIC -->
+            <div class="card card-m">
+                <div class="card-header">
+                    <h2 id="meta-title">Metaheuristic Extraction (PSO)</h2>
+                    <span class="badge badge-m" id="meta-badge">PSO Pruning</span>
+                </div>
+
+                <div class="pred-box">
+                    <div>
+                        <div style="font-size: 0.72rem; color: var(--text-secondary);">DIAGNOSTIC</div>
+                        <div class="pred-status" id="m-live-status">Ready</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.72rem; color: var(--text-secondary);">CONFIDENCE</div>
+                        <div style="font-size: 1.1rem; font-weight: 700;" id="m-live-conf">--%</div>
+                    </div>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat-item stat-m">
+                        <div class="val" id="m-acc">--%</div>
+                        <div class="lbl">Unseen-scan accuracy</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="val" id="m-feats">--</div>
+                        <div class="lbl">Selected Features</div>
+                    </div>
+                </div>
+
+                <div class="section-title">Leave-one-scan-out confusion matrix</div>
+                <div class="cm-grid">
+                    <div class="cm-cell cm-label"></div>
+                    <div class="cm-cell cm-label">Pred: Normal</div>
+                    <div class="cm-cell cm-label">Pred: PCOS</div>
+
+                    <div class="cm-cell cm-label">Actual: Normal</div>
+                    <div class="cm-cell cm-active-m">
+                        <div class="cm-num" id="m-tn">-</div>
+                        <div class="cm-desc">True Negative</div>
+                    </div>
+                    <div class="cm-cell">
+                        <div class="cm-num" id="m-fp">-</div>
+                        <div class="cm-desc">False Positive</div>
+                    </div>
+
+                    <div class="cm-cell cm-label">Actual: PCOS</div>
+                    <div class="cm-cell">
+                        <div class="cm-num" id="m-fn">-</div>
+                        <div class="cm-desc">False Negative</div>
+                    </div>
+                    <div class="cm-cell cm-active-m">
+                        <div class="cm-num" id="m-tp">-</div>
+                        <div class="cm-desc">True Positive</div>
+                    </div>
+                </div>
+
+                <div class="section-title">Diagnostic Metrics</div>
+                <div class="chart-box">
+                    <canvas id="chart-meta"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

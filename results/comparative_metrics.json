@@ -1,0 +1,188 @@
+{
+  "quantum": {
+    "image_accuracy": 0.7944,
+    "image_balanced_accuracy": 0.7889,
+    "image_roc_auc": 0.8842,
+    "scans_correct": "7/8",
+    "per_scan_accuracy": {
+      "0": 0.986,
+      "1": 0.873,
+      "2": 0.788,
+      "3": 0.559,
+      "4": 0.964,
+      "5": 0.399,
+      "6": 0.783,
+      "7": 1.0
+    },
+    "accuracy": 0.7944,
+    "precision": 0.74,
+    "recall": 0.7599,
+    "f1": 0.7498,
+    "confusion_matrix": [
+      [
+        934,
+        208
+      ],
+      [
+        187,
+        592
+      ]
+    ],
+    "selected_features": 64
+  },
+  "PSO": {
+    "image_accuracy": 0.7366,
+    "image_balanced_accuracy": 0.7262,
+    "image_roc_auc": 0.8108,
+    "scans_correct": "6/8",
+    "per_scan_accuracy": {
+      "0": 0.779,
+      "1": 1.0,
+      "2": 0.798,
+      "3": 0.441,
+      "4": 0.031,
+      "5": 0.751,
+      "6": 1.0,
+      "7": 0.778
+    },
+    "accuracy": 0.7366,
+    "precision": 0.6766,
+    "recall": 0.6714,
+    "f1": 0.674,
+    "confusion_matrix": [
+      [
+        892,
+        250
+      ],
+      [
+        256,
+        523
+      ]
+    ],
+    "selected_features": 20
+  },
+  "GWO": {
+    "image_accuracy": 0.7736,
+    "image_balanced_accuracy": 0.7428,
+    "image_roc_auc": 0.7591,
+    "scans_correct": "6/8",
+    "per_scan_accuracy": {
+      "0": 0.961,
+      "1": 1.0,
+      "2": 0.923,
+      "3": 0.656,
+      "4": 0.01,
+      "5": 0.295,
+      "6": 0.997,
+      "7": 1.0
+    },
+    "accuracy": 0.7736,
+    "precision": 0.8071,
+    "recall": 0.5802,
+    "f1": 0.6751,
+    "confusion_matrix": [
+      [
+        1034,
+        108
+      ],
+      [
+        327,
+        452
+      ]
+    ],
+    "selected_features": 20
+  },
+  "WOA": {
+    "image_accuracy": 0.6788,
+    "image_balanced_accuracy": 0.675,
+    "image_roc_auc": 0.7317,
+    "scans_correct": "6/8",
+    "per_scan_accuracy": {
+      "0": 0.829,
+      "1": 1.0,
+      "2": 0.517,
+      "3": 0.431,
+      "4": 0.031,
+      "5": 0.606,
+      "6": 1.0,
+      "7": 0.929
+    },
+    "accuracy": 0.6788,
+    "precision": 0.5944,
+    "recall": 0.6547,
+    "f1": 0.6231,
+    "confusion_matrix": [
+      [
+        794,
+        348
+      ],
+      [
+        269,
+        510
+      ]
+    ],
+    "selected_features": 20
+  },
+  "GA": {
+    "image_accuracy": 0.7126,
+    "image_balanced_accuracy": 0.723,
+    "image_roc_auc": 0.8376,
+    "scans_correct": "5/8",
+    "per_scan_accuracy": {
+      "0": 0.954,
+      "1": 1.0,
+      "2": 0.468,
+      "3": 0.19,
+      "4": 0.224,
+      "5": 0.927,
+      "6": 0.966,
+      "7": 1.0
+    },
+    "accuracy": 0.7126,
+    "precision": 0.6152,
+    "recall": 0.7779,
+    "f1": 0.6871,
+    "confusion_matrix": [
+      [
+        763,
+        379
+      ],
+      [
+        173,
+        606
+      ]
+    ],
+    "selected_features": 20
+  },
+  "FA": {
+    "image_accuracy": 0.6361,
+    "image_balanced_accuracy": 0.6525,
+    "image_roc_auc": 0.754,
+    "scans_correct": "4/8",
+    "per_scan_accuracy": {
+      "0": 0.511,
+      "1": 0.993,
+      "2": 0.379,
+      "3": 0.415,
+      "4": 0.302,
+      "5": 0.746,
+      "6": 0.959,
+      "7": 0.919
+    },
+    "accuracy": 0.6361,
+    "precision": 0.5373,
+    "recall": 0.7394,
+    "f1": 0.6224,
+    "confusion_matrix": [
+      [
+        646,
+        496
+      ],
+      [
+        203,
+        576
+      ]
+    ],
+    "selected_features": 20
+  }
+}
