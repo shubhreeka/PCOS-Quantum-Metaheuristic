@@ -60,6 +60,11 @@ async function classifyScan() {
             }
         }
 
+        const hStatus = document.getElementById('h-live-status');
+        hStatus.innerText = data.hybrid_pred.label;
+        hStatus.className = 'pred-status ' + (data.hybrid_pred.is_infected ? 'status-pcos' : 'status-normal');
+        document.getElementById('h-live-conf').innerText = data.hybrid_pred.confidence + '%';
+
         const qStatus = document.getElementById('q-live-status');
         qStatus.innerText = data.quantum_pred.label;
         qStatus.className = 'pred-status ' + (data.quantum_pred.is_infected ? 'status-pcos' : 'status-normal');
@@ -87,6 +92,10 @@ async function loadMetrics(algo = "PSO") {
         }
         const data = await res.json();
         console.log("Loaded empirical metrics:", data);
+
+        if (data.hybrid && data.hybrid.accuracy !== undefined) {
+            document.getElementById('h-acc').innerText = (data.hybrid.accuracy * 100).toFixed(1) + '%';
+        }
 
         // 1. Render Quantum Metrics
         const q = data.quantum;

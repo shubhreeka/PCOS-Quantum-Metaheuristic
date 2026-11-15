@@ -1,7 +1,7 @@
 model,scan_0,scan_1,scan_2,scan_3,scan_4,scan_5,scan_6,scan_7,image_accuracy,scans_correct
-"quantum (64)",0.986,0.873,0.788,0.559,0.964,0.399,0.783,1.0,0.7944,7/8
-"classical control (64)",0.904,0.627,0.795,0.154,0.943,0.301,0.424,1.0,0.6403,5/8
-"quantum + control (128)",0.939,0.746,0.824,0.005,0.969,0.363,0.603,1.0,0.6897,6/8
+"quantum (256)",0.986,0.906,0.987,0.918,1.0,0.788,0.8,1.0,0.9214,8/8
+"classical control: raw pixels (256)",0.871,0.533,0.811,0.318,0.87,0.368,0.322,1.0,0.6257,5/8
+"classical control: cos(pixel), no entanglement (256)",0.914,0.366,0.788,0.138,0.818,0.316,0.325,1.0,0.5752,4/8
 "MobileNetV2, all features (1280)",1.0,1.0,0.926,0.487,0.156,0.953,1.0,1.0,0.8438,6/8
 "MobileNetV2, 20 random features",0.993,1.0,0.967,0.426,0.115,0.746,0.997,1.0,0.8194,6/8
 "MobileNetV2 + PSO selection (20)",0.779,1.0,0.798,0.441,0.031,0.751,1.0,0.778,0.7366,6/8
@@ -9,7 +9,7 @@ model,scan_0,scan_1,scan_2,scan_3,scan_4,scan_5,scan_6,scan_7,image_accuracy,sca
 "MobileNetV2 + WOA selection (20)",0.829,1.0,0.517,0.431,0.031,0.606,1.0,0.929,0.6788,6/8
 "MobileNetV2 + GA selection (20)",0.954,1.0,0.468,0.19,0.224,0.927,0.966,1.0,0.7126,5/8
 "MobileNetV2 + FA selection (20)",0.511,0.993,0.379,0.415,0.302,0.746,0.959,0.919,0.6361,4/8
-"Hybrid MLP: quantum + best selection",0.982,1.0,0.997,0.262,0.823,0.845,0.986,1.0,0.8865,7/8
+"Hybrid MLP: quantum + best selection",1.0,1.0,1.0,0.877,0.917,0.964,0.993,1.0,0.9745,8/8
 "Same MLP without quantum",0.811,1.0,0.816,0.108,0.146,0.933,0.973,1.0,0.748,6/8
 "(leaky) random image-level 5-fold CV, all features",1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,8/8
-"(leaky) random image-level 5-fold CV, quantum",1.0,0.982,1.0,0.954,1.0,0.819,0.983,1.0,0.9719,8/8
+"(leaky) random image-level 5-fold CV, quantum",0.996,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0.9995,8/8

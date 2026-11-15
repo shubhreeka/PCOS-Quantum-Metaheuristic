@@ -49,6 +49,32 @@
             </button>
         </section>
 
+        <!-- FINAL DIAGNOSIS: HYBRID -->
+        <div class="card card-h hybrid-card">
+            <div class="card-header">
+                <h2>Final Diagnosis &middot; Hybrid Quantum + Classical</h2>
+                <span class="badge badge-h">Fusion MLP</span>
+            </div>
+            <div class="pred-box">
+                <div>
+                    <div style="font-size: 0.72rem; color: var(--text-secondary);">DIAGNOSTIC</div>
+                    <div class="pred-status" id="h-live-status">Ready</div>
+                </div>
+                <div>
+                    <div style="font-size: 0.72rem; color: var(--text-secondary);">CONFIDENCE</div>
+                    <div style="font-size: 1.1rem; font-weight: 700;" id="h-live-conf">--%</div>
+                </div>
+                <div>
+                    <div style="font-size: 0.72rem; color: var(--text-secondary);">UNSEEN-SCAN ACCURACY</div>
+                    <div style="font-size: 1.1rem; font-weight: 700; color: var(--accent-normal);" id="h-acc">--%</div>
+                </div>
+            </div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary);">
+                Combines the 256 quantum features with 20 metaheuristic-selected MobileNetV2 features.
+                Research prototype, not a medical device.
+            </div>
+        </div>
+
         <div class="dashboard">
             <!-- QUANTUM -->
             <div class="card card-q">
@@ -74,7 +100,7 @@
                         <div class="lbl">Unseen-scan accuracy</div>
                     </div>
                     <div class="stat-item">
-                        <div class="val" id="q-feats">64</div>
+                        <div class="val" id="q-feats">256</div>
                         <div class="lbl">Quantum features</div>
                     </div>
                 </div>

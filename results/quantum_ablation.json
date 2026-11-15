@@ -1,0 +1,52 @@
+{
+  "input 32x32, pool 4x4, C=0.1": {
+    "accuracy": 0.7944,
+    "roc_auc": 0.8842,
+    "scans_correct": "7/8"
+  },
+  "input 32x32, pool 8x8, C=0.1": {
+    "accuracy": 0.822,
+    "roc_auc": 0.8999,
+    "scans_correct": "8/8"
+  },
+  "input 64x64, pool 4x4, C=0.1": {
+    "accuracy": 0.8251,
+    "roc_auc": 0.908,
+    "scans_correct": "7/8"
+  },
+  "input 64x64, pool 8x8, C=0.1": {
+    "accuracy": 0.9214,
+    "roc_auc": 0.9763,
+    "scans_correct": "8/8"
+  },
+  "input 64x64, pool 16x16, C=0.1": {
+    "accuracy": 0.923,
+    "roc_auc": 0.9808,
+    "scans_correct": "8/8"
+  },
+  "input 128x128, pool 8x8, C=0.1": {
+    "accuracy": 0.9464,
+    "roc_auc": 0.9839,
+    "scans_correct": "8/8"
+  },
+  "input 64x64, pool 8x8, C=0.01": {
+    "accuracy": 0.8902,
+    "roc_auc": 0.9631,
+    "scans_correct": "8/8"
+  },
+  "input 64x64, pool 8x8, C=0.03": {
+    "accuracy": 0.9094,
+    "roc_auc": 0.9716,
+    "scans_correct": "8/8"
+  },
+  "input 64x64, pool 8x8, C=0.3": {
+    "accuracy": 0.9287,
+    "roc_auc": 0.9792,
+    "scans_correct": "8/8"
+  },
+  "input 64x64, pool 8x8, C=1.0": {
+    "accuracy": 0.9381,
+    "roc_auc": 0.9835,
+    "scans_correct": "8/8"
+  }
+}

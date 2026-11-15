@@ -194,6 +194,20 @@ header p {
     background: linear-gradient(90deg, transparent, var(--q-color), transparent);
 }
 
+.card-h::before {
+    background: linear-gradient(90deg, transparent, var(--accent-normal), transparent);
+}
+
+.hybrid-card {
+    margin-bottom: 2rem;
+}
+
+.badge-h {
+    background: rgba(16, 185, 129, 0.15);
+    color: #6ee7b7;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
 .card-m::before {
     background: linear-gradient(90deg, transparent, var(--m-color), transparent);
 }

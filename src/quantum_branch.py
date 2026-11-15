@@ -2,8 +2,8 @@
 
 A 2x2 grayscale patch (pixel values scaled to [0, pi]) is angle-encoded into 4 qubits with RY
 rotations, entangled with a ring of CNOTs, and measured as <Z> on every qubit
-(Henderson et al., 2019, "Quanvolutional Neural Networks"). Sliding the circuit over a 32x32
-image with stride 2 gives a 4-channel 16x16 map, average-pooled to 4x4 -> 64 features.
+(Henderson et al., 2019, "Quanvolutional Neural Networks"). Sliding the circuit over a 64x64
+image with stride 2 gives a 4-channel 32x32 map, average-pooled to 8x8 -> 256 features.
 
 Two equivalent implementations are provided:
   * `quanv_circuit`   - the reference PennyLane QNode (needs `pennylane`)
@@ -71,11 +71,12 @@ def quanv_image(img, kernel=2, stride=2):
 
 
 class QuantumFeatureExtractor(nn.Module):
-    """(N, 1, 32, 32) tensor of angles -> (N, 64) quanvolutional features."""
+    """(N, 1, 64, 64) tensor of angles -> (N, 256) quanvolutional features."""
 
     def __init__(self):
         super().__init__()
-        self.pool = nn.AdaptiveAvgPool2d((4, 4))
+        from src.config import Q_POOL
+        self.pool = nn.AdaptiveAvgPool2d((Q_POOL, Q_POOL))
 
     def forward(self, q_img):
         maps = quanv_image(q_img[:, 0].detach().cpu().numpy().astype(np.float64))

@@ -10,11 +10,13 @@ from importlib import import_module
 import cv2
 import joblib
 import numpy as np
+import torch
 from flask import Flask, jsonify, render_template, request
 from PIL import Image
 
 from src.config import IMG_SIZE, MODELS, RESULTS
 from src.dataset import clahe_rgb
+from src.hybrid_model import HybridPCOSClassifier, predict_hybrid
 from src.quantum_branch import QuantumFeatureExtractor
 
 features = import_module("02_extract_features")
@@ -25,6 +27,21 @@ backbone = features.load_backbone()
 q_extractor = QuantumFeatureExtractor()
 masks = np.load(MODELS / "masks.npz")
 classifiers = {name: joblib.load(MODELS / f"{name}_clf.joblib") for name in ["quantum", *masks.files]}
+
+
+def load_hybrid():
+    """Final diagnosis: fusion MLP over quantum + selected classical features (5-seed ensemble)."""
+    ckpt = torch.load(MODELS / "hybrid.pt", weights_only=False)
+    members = []
+    for m in ckpt["members"]:
+        model = HybridPCOSClassifier(quantum_dim=len(m["mu_q"]), classical_dim=len(m["mu_c"]))
+        model.load_state_dict(m["state_dict"])
+        model.eval()
+        members.append((model, {k: m[k].numpy() for k in ("mu_q", "sd_q", "mu_c", "sd_c")}))
+    return ckpt["selector"], members
+
+
+hybrid_selector, hybrid_members = load_hybrid()
 
 
 def looks_like_ultrasound(rgb):
@@ -76,7 +93,8 @@ def home():
 @app.route("/api/metrics/<algo>")
 def get_metrics(algo):
     data = json.loads((RESULTS / "comparative_metrics.json").read_text())
-    return jsonify({"quantum": data["quantum"], "metaheuristic": data.get(algo.upper(), data["PSO"])})
+    return jsonify({"quantum": data["quantum"], "hybrid": data["hybrid"],
+                    "metaheuristic": data.get(algo.upper(), data["PSO"])})
 
 
 @app.route("/api/predict", methods=["POST"])
@@ -99,10 +117,13 @@ def predict():
     q_feats = q_extractor(features.small_gray(enhanced[None])).numpy()
     p_q = float(classifiers["quantum"].predict_proba(q_feats)[0, 1])
     p_m = float(classifiers[algo].predict_proba(c_feats[:, masks[algo]])[0, 1])
+    sel = c_feats[:, masks[hybrid_selector]]
+    p_h = float(np.mean([predict_hybrid(m, st, q_feats, sel)[0] for m, st in hybrid_members]))
 
-    shown, n_blobs = dark_blobs(enhanced) if p_m >= 0.5 else (enhanced, 0)
+    shown, n_blobs = dark_blobs(enhanced) if p_h >= 0.5 else (enhanced, 0)
     _, buf = cv2.imencode(".png", cv2.cvtColor(shown, cv2.COLOR_RGB2BGR))
-    return jsonify({"quantum_pred": branch(p_q),
+    return jsonify({"hybrid_pred": branch(p_h),
+                    "quantum_pred": branch(p_q),
                     "metaheuristic_pred": {**branch(p_m), "algorithm": algo},
                     "follicles_detected": n_blobs,
                     "annotated_image": "data:image/png;base64," + base64.b64encode(buf).decode()})

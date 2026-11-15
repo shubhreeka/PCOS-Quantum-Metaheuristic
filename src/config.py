@@ -13,5 +13,6 @@ for _d in (ARTIFACTS, RESULTS, MODELS):
 
 CLASSES = ["notinfected", "infected"]   # label 0 = no PCOS, 1 = PCOS
 IMG_SIZE = 224        # classical branch input
-Q_SIZE = 32           # quantum branch input (grayscale)
+Q_SIZE = 64           # quantum branch input (grayscale)
+Q_POOL = 8            # quanvolution maps are average-pooled to Q_POOL x Q_POOL
 SEED = 42

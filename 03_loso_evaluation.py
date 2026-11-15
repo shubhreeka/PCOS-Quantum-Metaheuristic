@@ -6,7 +6,7 @@ the 8th, unseen scan, and repeat 8 times. Everything is fitted inside each fold:
   * standardisation and logistic-regression weights (C fixed at 0.1, there is no data to tune it)
   * metaheuristic feature selection: k=20 of 1,280 MobileNetV2 features, fitness = group-aware
     3-fold CV balanced accuracy over the 7 training scans, 300 evaluations per algorithm
-  * hybrid MLP (quantum 64 + selected classical 20), fixed number of epochs, averaged over 5 seeds
+  * hybrid MLP (quantum 256 + selected classical 20), fixed number of epochs, averaged over 5 seeds
 
 For contrast, the same classifier is also scored with a random image-level 5-fold CV, which is
 how the original 98.9% figure arises.
@@ -16,8 +16,6 @@ Outputs: results/loso_results.json, results/loso_per_scan.csv, results/convergen
 import json
 
 import numpy as np
-import torch
-import torch.nn as nn
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (accuracy_score, balanced_accuracy_score, confusion_matrix, f1_score,
                              precision_score, recall_score, roc_auc_score)
@@ -26,7 +24,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
 from src.config import ARTIFACTS, RESULTS, SEED
-from src.hybrid_model import HybridPCOSClassifier
+from src.hybrid_model import fit_hybrid, predict_hybrid
 from src.metaheuristic_opt import ALGORITHMS, run_selector
 
 K, BUDGET, C = 20, 300, 0.1
@@ -39,25 +37,8 @@ def logreg():
 
 
 def mlp_predict(Xq, Xc, y, tr, te, seed=SEED):
-    torch.manual_seed(seed)
-    def norm(X):
-        mu, sd = X[tr].mean(0), X[tr].std(0) + 1e-6
-        return torch.tensor((X - mu) / sd, dtype=torch.float32)
-    q, c, t = norm(Xq), norm(Xc), torch.tensor(y, dtype=torch.long)
-    model = HybridPCOSClassifier(quantum_dim=q.shape[1], classical_dim=c.shape[1])
-    opt = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-3)
-    idx = torch.tensor(np.where(tr)[0])
-    for _ in range(MLP_EPOCHS):
-        model.train()
-        for b in idx[torch.randperm(len(idx))].split(64):
-            if len(b) < 2:  # BatchNorm needs at least 2 samples
-                continue
-            opt.zero_grad()
-            nn.functional.cross_entropy(model(q[b], c[b]), t[b]).backward()
-            opt.step()
-    model.eval()
-    with torch.no_grad():
-        return torch.softmax(model(q[te], c[te]), 1)[:, 1].numpy()
+    model, stats = fit_hybrid(Xq, Xc, y, tr, seed, epochs=MLP_EPOCHS)
+    return predict_hybrid(model, stats, Xq[te], Xc[te])
 
 
 def summarise(y, prob, groups, n_features=None):
@@ -84,8 +65,8 @@ def main():
     Xc, Xq, Xctl = f["classical"], f["quantum"], f["control"]
     scans = np.unique(groups)
 
-    fixed_sets = {"quantum (64)": Xq, "classical control (64)": Xctl,
-                  "quantum + control (128)": np.hstack([Xq, Xctl]),
+    fixed_sets = {"quantum (256)": Xq, "classical control: raw pixels (256)": Xctl,
+                  "classical control: cos(pixel), no entanglement (256)": f["cos_control"],
                   "MobileNetV2, all features (1280)": Xc}
     names = list(fixed_sets) + ["MobileNetV2, 20 random features"] + \
         [f"MobileNetV2 + {a} selection (20)" for a in ALGORITHMS] + \

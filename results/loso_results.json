@@ -1,96 +1,96 @@
 {
-  "quantum (64)": {
-    "image_accuracy": 0.7944,
-    "image_balanced_accuracy": 0.7889,
-    "image_roc_auc": 0.8842,
-    "scans_correct": "7/8",
+  "quantum (256)": {
+    "image_accuracy": 0.9214,
+    "image_balanced_accuracy": 0.9135,
+    "image_roc_auc": 0.9763,
+    "scans_correct": "8/8",
     "per_scan_accuracy": {
       "0": 0.986,
-      "1": 0.873,
-      "2": 0.788,
-      "3": 0.559,
-      "4": 0.964,
-      "5": 0.399,
-      "6": 0.783,
+      "1": 0.906,
+      "2": 0.987,
+      "3": 0.918,
+      "4": 1.0,
+      "5": 0.788,
+      "6": 0.8,
       "7": 1.0
     },
-    "accuracy": 0.7944,
-    "precision": 0.74,
-    "recall": 0.7599,
-    "f1": 0.7498,
+    "accuracy": 0.9214,
+    "precision": 0.9301,
+    "recall": 0.8716,
+    "f1": 0.8999,
     "confusion_matrix": [
       [
-        934,
-        208
+        1091,
+        51
       ],
       [
-        187,
-        592
+        100,
+        679
       ]
     ],
-    "selected_features": 64
+    "selected_features": 256
   },
-  "classical control (64)": {
-    "image_accuracy": 0.6403,
-    "image_balanced_accuracy": 0.633,
-    "image_roc_auc": 0.7012,
+  "classical control: raw pixels (256)": {
+    "image_accuracy": 0.6257,
+    "image_balanced_accuracy": 0.6144,
+    "image_roc_auc": 0.6585,
     "scans_correct": "5/8",
     "per_scan_accuracy": {
-      "0": 0.904,
-      "1": 0.627,
-      "2": 0.795,
-      "3": 0.154,
-      "4": 0.943,
-      "5": 0.301,
-      "6": 0.424,
+      "0": 0.871,
+      "1": 0.533,
+      "2": 0.811,
+      "3": 0.318,
+      "4": 0.87,
+      "5": 0.368,
+      "6": 0.322,
       "7": 1.0
     },
-    "accuracy": 0.6403,
-    "precision": 0.5525,
-    "recall": 0.5944,
-    "f1": 0.5727,
+    "accuracy": 0.6257,
+    "precision": 0.5373,
+    "recall": 0.5546,
+    "f1": 0.5458,
     "confusion_matrix": [
       [
-        767,
-        375
+        770,
+        372
       ],
       [
-        316,
-        463
+        347,
+        432
       ]
     ],
-    "selected_features": 64
+    "selected_features": 256
   },
-  "quantum + control (128)": {
-    "image_accuracy": 0.6897,
-    "image_balanced_accuracy": 0.6889,
-    "image_roc_auc": 0.7633,
-    "scans_correct": "6/8",
+  "classical control: cos(pixel), no entanglement (256)": {
+    "image_accuracy": 0.5752,
+    "image_balanced_accuracy": 0.5681,
+    "image_roc_auc": 0.5863,
+    "scans_correct": "4/8",
     "per_scan_accuracy": {
-      "0": 0.939,
-      "1": 0.746,
-      "2": 0.824,
-      "3": 0.005,
-      "4": 0.969,
-      "5": 0.363,
-      "6": 0.603,
+      "0": 0.914,
+      "1": 0.366,
+      "2": 0.788,
+      "3": 0.138,
+      "4": 0.818,
+      "5": 0.316,
+      "6": 0.325,
       "7": 1.0
     },
-    "accuracy": 0.6897,
-    "precision": 0.6036,
-    "recall": 0.6842,
-    "f1": 0.6414,
+    "accuracy": 0.5752,
+    "precision": 0.4786,
+    "recall": 0.5302,
+    "f1": 0.503,
     "confusion_matrix": [
       [
-        792,
-        350
+        692,
+        450
       ],
       [
-        246,
-        533
+        366,
+        413
       ]
     ],
-    "selected_features": 128
+    "selected_features": 256
   },
   "MobileNetV2, all features (1280)": {
     "image_accuracy": 0.8438,
@@ -310,41 +310,41 @@
     "selected_features": 20
   },
   "Hybrid MLP: quantum + best selection": {
-    "image_accuracy": 0.8865,
-    "image_balanced_accuracy": 0.8907,
-    "image_roc_auc": 0.9487,
-    "scans_correct": "7/8",
+    "image_accuracy": 0.9745,
+    "image_balanced_accuracy": 0.9734,
+    "image_roc_auc": 0.9976,
+    "scans_correct": "8/8",
     "per_scan_accuracy": {
-      "0": 0.982,
+      "0": 1.0,
       "1": 1.0,
-      "2": 0.997,
-      "3": 0.262,
-      "4": 0.823,
-      "5": 0.845,
-      "6": 0.986,
+      "2": 1.0,
+      "3": 0.877,
+      "4": 0.917,
+      "5": 0.964,
+      "6": 0.993,
       "7": 1.0
     },
-    "accuracy": 0.8865,
-    "precision": 0.8258,
-    "recall": 0.9127,
-    "f1": 0.8671,
+    "accuracy": 0.9745,
+    "precision": 0.9692,
+    "recall": 0.9679,
+    "f1": 0.9685,
     "confusion_matrix": [
       [
-        992,
-        150
+        1118,
+        24
       ],
       [
-        68,
-        711
+        25,
+        754
       ]
     ],
     "selected_features": 20,
     "image_accuracy_per_seed": [
-      0.9063,
-      0.8506,
-      0.8777,
-      0.873,
-      0.8574
+      0.9505,
+      0.975,
+      0.9724,
+      0.9651,
+      0.962
     ]
   },
   "Same MLP without quantum": {
@@ -427,32 +427,32 @@
     "selected_features": null
   },
   "(leaky) random image-level 5-fold CV, quantum": {
-    "image_accuracy": 0.9719,
-    "image_balanced_accuracy": 0.9682,
-    "image_roc_auc": 0.9972,
+    "image_accuracy": 0.9995,
+    "image_balanced_accuracy": 0.9996,
+    "image_roc_auc": 1.0,
     "scans_correct": "8/8",
     "per_scan_accuracy": {
-      "0": 1.0,
-      "1": 0.982,
+      "0": 0.996,
+      "1": 1.0,
       "2": 1.0,
-      "3": 0.954,
+      "3": 1.0,
       "4": 1.0,
-      "5": 0.819,
-      "6": 0.983,
+      "5": 1.0,
+      "6": 1.0,
       "7": 1.0
     },
-    "accuracy": 0.9719,
-    "precision": 0.9814,
-    "recall": 0.9487,
-    "f1": 0.9648,
+    "accuracy": 0.9995,
+    "precision": 0.9987,
+    "recall": 1.0,
+    "f1": 0.9994,
     "confusion_matrix": [
       [
-        1128,
-        14
+        1141,
+        1
       ],
       [
-        40,
-        739
+        0,
+        779
       ]
     ],
     "selected_features": null
