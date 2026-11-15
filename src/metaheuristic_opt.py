@@ -33,10 +33,17 @@ class BudgetExhausted(Exception):
 
 
 class Fitness:
-    def __init__(self, X, y, groups, k, seed=42, budget=None):
-        self.X, self.y, self.k, self.budget = X, y, k, budget
-        cv = StratifiedGroupKFold(n_splits=3, shuffle=True, random_state=seed)
-        self.folds = list(cv.split(X, y, groups))
+    """mode="group3":    mean balanced accuracy, group-aware 3-fold CV.
+    mode="loso_prob":  inner leave-one-scan-out; mean over held-out scans of the predicted probability of
+                       the correct class. Mirrors the real test (a whole unseen scan) and is smooth."""
+
+    def __init__(self, X, y, groups, k, seed=42, budget=None, mode="group3"):
+        self.X, self.y, self.k, self.budget, self.mode = X, y, k, budget, mode
+        if mode == "group3":
+            cv = StratifiedGroupKFold(n_splits=3, shuffle=True, random_state=seed)
+            self.folds = list(cv.split(X, y, groups))
+        else:
+            self.folds = [(np.where(groups != g)[0], np.where(groups == g)[0]) for g in np.unique(groups)]
         self.cache, self.evals = {}, 0
 
     def __call__(self, vec):
@@ -50,24 +57,28 @@ class Fitness:
             for tr, va in self.folds:
                 clf = make_pipeline(StandardScaler(), LogisticRegression(C=0.1, max_iter=500))
                 clf.fit(self.X[tr][:, mask], self.y[tr])
-                scores.append(balanced_accuracy_score(self.y[va], clf.predict(self.X[va][:, mask])))
+                if self.mode == "group3":
+                    scores.append(balanced_accuracy_score(self.y[va], clf.predict(self.X[va][:, mask])))
+                else:
+                    p = clf.predict_proba(self.X[va][:, mask])[:, 1]
+                    scores.append(float(np.mean(np.where(self.y[va] == 1, p, 1 - p))))
             self.cache[key] = float(np.mean(scores))
         return self.cache[key]
 
 
-def run_selector(name, X, y, groups, k=20, pop_size=16, iters=None, budget=300, seed=42):
+def run_selector(name, X, y, groups, k=20, pop_size=16, iters=None, budget=300, seed=42, mode="group3"):
     """Returns (mask, best CV fitness, best-so-far history per iteration, evaluations used).
     Every algorithm gets the same budget of unique fitness evaluations."""
     try:
-        return _run(name, X, y, groups, k, pop_size, iters, budget, seed)
+        return _run(name, X, y, groups, k, pop_size, iters, budget, seed, mode)
     except BudgetExhausted as stop:
         return stop.args[0]
 
 
-def _run(name, X, y, groups, k, pop_size, iters, budget, seed):
+def _run(name, X, y, groups, k, pop_size, iters, budget, seed, mode):
     iters = iters or max(budget // pop_size - 1, 1)   # so decay schedules finish within the budget
     rng = np.random.default_rng(seed)
-    f = Fitness(X, y, groups, k, seed, budget)
+    f = Fitness(X, y, groups, k, seed, budget, mode)
     d = X.shape[1]
     pop = rng.uniform(LOW, HIGH, (pop_size, d))
     fit = np.array([f(p) for p in pop])  # initial population always fits in the budget

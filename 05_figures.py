@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 
 SHOW = [("(leaky) random image-level 5-fold CV, all features", "Random image split (leaky)", "#bbbbbb"),
         ("MobileNetV2, all features (1280)", "MobileNetV2, all features", "#4c78a8"),
-        ("MobileNetV2 + GA selection (20)", "MobileNetV2 + GA-selected 20", "#72b7b2"),
+        ("Quantum + GWO selection (20)", "GWO-selected 20 quantum features", "#72b7b2"),
         ("quantum (256)", "Quantum features only", "#b279a2"),
         ("Same MLP without quantum", "MLP without quantum", "#f58518"),
         ("Hybrid MLP: quantum + best selection", "Hybrid quantum + classical", "#54a24b")]

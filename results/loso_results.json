@@ -309,6 +309,198 @@
     ],
     "selected_features": 20
   },
+  "Quantum, 20 random features": {
+    "image_accuracy": 0.8183,
+    "image_balanced_accuracy": 0.808,
+    "image_roc_auc": 0.9061,
+    "scans_correct": "8/8",
+    "per_scan_accuracy": {
+      "0": 1.0,
+      "1": 0.888,
+      "2": 0.852,
+      "3": 0.651,
+      "4": 0.995,
+      "5": 0.497,
+      "6": 0.681,
+      "7": 1.0
+    },
+    "accuracy": 0.8183,
+    "precision": 0.789,
+    "recall": 0.7535,
+    "f1": 0.7708,
+    "confusion_matrix": [
+      [
+        985,
+        157
+      ],
+      [
+        192,
+        587
+      ]
+    ],
+    "selected_features": 20,
+    "accuracy_per_random_draw": {
+      "mean": 0.7514,
+      "std": 0.0434,
+      "min": 0.6726,
+      "max": 0.8225
+    }
+  },
+  "Quantum + PSO selection (20)": {
+    "image_accuracy": 0.8209,
+    "image_balanced_accuracy": 0.8027,
+    "image_roc_auc": 0.9039,
+    "scans_correct": "7/8",
+    "per_scan_accuracy": {
+      "0": 0.975,
+      "1": 0.909,
+      "2": 0.826,
+      "3": 0.923,
+      "4": 0.891,
+      "5": 0.756,
+      "6": 0.454,
+      "7": 1.0
+    },
+    "accuracy": 0.8209,
+    "precision": 0.8271,
+    "recall": 0.706,
+    "f1": 0.7618,
+    "confusion_matrix": [
+      [
+        1027,
+        115
+      ],
+      [
+        229,
+        550
+      ]
+    ],
+    "selected_features": 20
+  },
+  "Quantum + GWO selection (20)": {
+    "image_accuracy": 0.8818,
+    "image_balanced_accuracy": 0.8716,
+    "image_roc_auc": 0.9485,
+    "scans_correct": "8/8",
+    "per_scan_accuracy": {
+      "0": 0.979,
+      "1": 0.826,
+      "2": 0.949,
+      "3": 0.944,
+      "4": 0.911,
+      "5": 0.881,
+      "6": 0.654,
+      "7": 1.0
+    },
+    "accuracy": 0.8818,
+    "precision": 0.8823,
+    "recall": 0.8177,
+    "f1": 0.8488,
+    "confusion_matrix": [
+      [
+        1057,
+        85
+      ],
+      [
+        142,
+        637
+      ]
+    ],
+    "selected_features": 20
+  },
+  "Quantum + WOA selection (20)": {
+    "image_accuracy": 0.8485,
+    "image_balanced_accuracy": 0.841,
+    "image_roc_auc": 0.9134,
+    "scans_correct": "8/8",
+    "per_scan_accuracy": {
+      "0": 0.986,
+      "1": 0.88,
+      "2": 0.836,
+      "3": 0.821,
+      "4": 0.87,
+      "5": 0.689,
+      "6": 0.763,
+      "7": 1.0
+    },
+    "accuracy": 0.8485,
+    "precision": 0.8211,
+    "recall": 0.801,
+    "f1": 0.8109,
+    "confusion_matrix": [
+      [
+        1006,
+        136
+      ],
+      [
+        155,
+        624
+      ]
+    ],
+    "selected_features": 20
+  },
+  "Quantum + GA selection (20)": {
+    "image_accuracy": 0.86,
+    "image_balanced_accuracy": 0.8679,
+    "image_roc_auc": 0.9471,
+    "scans_correct": "8/8",
+    "per_scan_accuracy": {
+      "0": 0.936,
+      "1": 0.736,
+      "2": 0.765,
+      "3": 0.918,
+      "4": 1.0,
+      "5": 0.803,
+      "6": 0.892,
+      "7": 1.0
+    },
+    "accuracy": 0.86,
+    "precision": 0.7808,
+    "recall": 0.9101,
+    "f1": 0.8405,
+    "confusion_matrix": [
+      [
+        943,
+        199
+      ],
+      [
+        70,
+        709
+      ]
+    ],
+    "selected_features": 20
+  },
+  "Quantum + FA selection (20)": {
+    "image_accuracy": 0.8272,
+    "image_balanced_accuracy": 0.8206,
+    "image_roc_auc": 0.9084,
+    "scans_correct": "8/8",
+    "per_scan_accuracy": {
+      "0": 0.993,
+      "1": 0.699,
+      "2": 0.875,
+      "3": 0.841,
+      "4": 0.812,
+      "5": 0.699,
+      "6": 0.753,
+      "7": 1.0
+    },
+    "accuracy": 0.8272,
+    "precision": 0.7876,
+    "recall": 0.7856,
+    "f1": 0.7866,
+    "confusion_matrix": [
+      [
+        977,
+        165
+      ],
+      [
+        167,
+        612
+      ]
+    ],
+    "selected_features": 20
+  },
   "Hybrid MLP: quantum + best selection": {
     "image_accuracy": 0.9745,
     "image_balanced_accuracy": 0.9734,

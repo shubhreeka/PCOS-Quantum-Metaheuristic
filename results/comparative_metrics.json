@@ -69,156 +69,156 @@
     ]
   },
   "PSO": {
-    "image_accuracy": 0.7366,
-    "image_balanced_accuracy": 0.7262,
-    "image_roc_auc": 0.8108,
-    "scans_correct": "6/8",
+    "image_accuracy": 0.8209,
+    "image_balanced_accuracy": 0.8027,
+    "image_roc_auc": 0.9039,
+    "scans_correct": "7/8",
     "per_scan_accuracy": {
-      "0": 0.779,
-      "1": 1.0,
-      "2": 0.798,
-      "3": 0.441,
-      "4": 0.031,
-      "5": 0.751,
-      "6": 1.0,
-      "7": 0.778
+      "0": 0.975,
+      "1": 0.909,
+      "2": 0.826,
+      "3": 0.923,
+      "4": 0.891,
+      "5": 0.756,
+      "6": 0.454,
+      "7": 1.0
     },
-    "accuracy": 0.7366,
-    "precision": 0.6766,
-    "recall": 0.6714,
-    "f1": 0.674,
+    "accuracy": 0.8209,
+    "precision": 0.8271,
+    "recall": 0.706,
+    "f1": 0.7618,
     "confusion_matrix": [
       [
-        892,
-        250
+        1027,
+        115
       ],
       [
-        256,
-        523
+        229,
+        550
       ]
     ],
     "selected_features": 20
   },
   "GWO": {
-    "image_accuracy": 0.7736,
-    "image_balanced_accuracy": 0.7428,
-    "image_roc_auc": 0.7591,
-    "scans_correct": "6/8",
+    "image_accuracy": 0.8818,
+    "image_balanced_accuracy": 0.8716,
+    "image_roc_auc": 0.9485,
+    "scans_correct": "8/8",
     "per_scan_accuracy": {
-      "0": 0.961,
-      "1": 1.0,
-      "2": 0.923,
-      "3": 0.656,
-      "4": 0.01,
-      "5": 0.295,
-      "6": 0.997,
+      "0": 0.979,
+      "1": 0.826,
+      "2": 0.949,
+      "3": 0.944,
+      "4": 0.911,
+      "5": 0.881,
+      "6": 0.654,
       "7": 1.0
     },
-    "accuracy": 0.7736,
-    "precision": 0.8071,
-    "recall": 0.5802,
-    "f1": 0.6751,
+    "accuracy": 0.8818,
+    "precision": 0.8823,
+    "recall": 0.8177,
+    "f1": 0.8488,
     "confusion_matrix": [
       [
-        1034,
-        108
+        1057,
+        85
       ],
       [
-        327,
-        452
+        142,
+        637
       ]
     ],
     "selected_features": 20
   },
   "WOA": {
-    "image_accuracy": 0.6788,
-    "image_balanced_accuracy": 0.675,
-    "image_roc_auc": 0.7317,
-    "scans_correct": "6/8",
+    "image_accuracy": 0.8485,
+    "image_balanced_accuracy": 0.841,
+    "image_roc_auc": 0.9134,
+    "scans_correct": "8/8",
     "per_scan_accuracy": {
-      "0": 0.829,
-      "1": 1.0,
-      "2": 0.517,
-      "3": 0.431,
-      "4": 0.031,
-      "5": 0.606,
-      "6": 1.0,
-      "7": 0.929
+      "0": 0.986,
+      "1": 0.88,
+      "2": 0.836,
+      "3": 0.821,
+      "4": 0.87,
+      "5": 0.689,
+      "6": 0.763,
+      "7": 1.0
     },
-    "accuracy": 0.6788,
-    "precision": 0.5944,
-    "recall": 0.6547,
-    "f1": 0.6231,
+    "accuracy": 0.8485,
+    "precision": 0.8211,
+    "recall": 0.801,
+    "f1": 0.8109,
     "confusion_matrix": [
       [
-        794,
-        348
+        1006,
+        136
       ],
       [
-        269,
-        510
+        155,
+        624
       ]
     ],
     "selected_features": 20
   },
   "GA": {
-    "image_accuracy": 0.7126,
-    "image_balanced_accuracy": 0.723,
-    "image_roc_auc": 0.8376,
-    "scans_correct": "5/8",
+    "image_accuracy": 0.86,
+    "image_balanced_accuracy": 0.8679,
+    "image_roc_auc": 0.9471,
+    "scans_correct": "8/8",
     "per_scan_accuracy": {
-      "0": 0.954,
-      "1": 1.0,
-      "2": 0.468,
-      "3": 0.19,
-      "4": 0.224,
-      "5": 0.927,
-      "6": 0.966,
+      "0": 0.936,
+      "1": 0.736,
+      "2": 0.765,
+      "3": 0.918,
+      "4": 1.0,
+      "5": 0.803,
+      "6": 0.892,
       "7": 1.0
     },
-    "accuracy": 0.7126,
-    "precision": 0.6152,
-    "recall": 0.7779,
-    "f1": 0.6871,
+    "accuracy": 0.86,
+    "precision": 0.7808,
+    "recall": 0.9101,
+    "f1": 0.8405,
     "confusion_matrix": [
       [
-        763,
-        379
+        943,
+        199
       ],
       [
-        173,
-        606
+        70,
+        709
       ]
     ],
     "selected_features": 20
   },
   "FA": {
-    "image_accuracy": 0.6361,
-    "image_balanced_accuracy": 0.6525,
-    "image_roc_auc": 0.754,
-    "scans_correct": "4/8",
+    "image_accuracy": 0.8272,
+    "image_balanced_accuracy": 0.8206,
+    "image_roc_auc": 0.9084,
+    "scans_correct": "8/8",
     "per_scan_accuracy": {
-      "0": 0.511,
-      "1": 0.993,
-      "2": 0.379,
-      "3": 0.415,
-      "4": 0.302,
-      "5": 0.746,
-      "6": 0.959,
-      "7": 0.919
+      "0": 0.993,
+      "1": 0.699,
+      "2": 0.875,
+      "3": 0.841,
+      "4": 0.812,
+      "5": 0.699,
+      "6": 0.753,
+      "7": 1.0
     },
-    "accuracy": 0.6361,
-    "precision": 0.5373,
-    "recall": 0.7394,
-    "f1": 0.6224,
+    "accuracy": 0.8272,
+    "precision": 0.7876,
+    "recall": 0.7856,
+    "f1": 0.7866,
     "confusion_matrix": [
       [
-        646,
-        496
+        977,
+        165
       ],
       [
-        203,
-        576
+        167,
+        612
       ]
     ],
     "selected_features": 20

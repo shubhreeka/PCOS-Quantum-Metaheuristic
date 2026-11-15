@@ -30,6 +30,7 @@ from src.metaheuristic_opt import ALGORITHMS, run_selector
 K, BUDGET, C = 20, 300, 0.1
 MLP_EPOCHS = 60
 MLP_SEEDS = [0, 1, 2, 3, 4]
+N_RANDOM_Q = 20     # random 20-feature subsets of the quantum features (baseline for the selectors)
 
 
 def logreg():
@@ -70,11 +71,15 @@ def main():
                   "MobileNetV2, all features (1280)": Xc}
     names = list(fixed_sets) + ["MobileNetV2, 20 random features"] + \
         [f"MobileNetV2 + {a} selection (20)" for a in ALGORITHMS] + \
+        ["Quantum, 20 random features"] + [f"Quantum + {a} selection (20)" for a in ALGORITHMS] + \
         ["Hybrid MLP: quantum + best selection", "Same MLP without quantum"]
     probs = {n: np.zeros(len(y)) for n in names}
     convergence = {a: [] for a in ALGORITHMS}
     picked = {a: [] for a in ALGORITHMS}
+    picked_q = {a: [] for a in ALGORITHMS}
     rng = np.random.default_rng(SEED)
+    rng_q = np.random.default_rng(SEED + 1)
+    rand_q_draws = np.zeros((N_RANDOM_Q, len(y)))
     best_per_fold = []
     seed_probs = {"Hybrid MLP: quantum + best selection": [], "Same MLP without quantum": []}
 
@@ -90,7 +95,6 @@ def main():
         best_algo, best_fit = None, -1
         for a in ALGORITHMS:
             mask, fit, hist, evals = run_selector(a, Xc[tr], y[tr], groups[tr], k=K, budget=BUDGET, seed=SEED)
-            convergence[a].append(hist)
             picked[a].append(np.where(mask)[0].tolist())
             probs[f"MobileNetV2 + {a} selection (20)"][te] = \
                 logreg().fit(Xc[tr][:, mask], y[tr]).predict_proba(Xc[te][:, mask])[:, 1]
@@ -98,6 +102,19 @@ def main():
                 best_algo, best_fit, best_mask = a, fit, mask
             print(f"  {a:4s} cv_fitness={fit:.3f} evals={evals}", flush=True)
         best_per_fold.append(best_algo)
+
+        # metaheuristic selection from the quantum features (used by the web app's metaheuristic branch)
+        for i in range(N_RANDOM_Q):
+            m = rng_q.permutation(Xq.shape[1])[:K]
+            rand_q_draws[i, te] = logreg().fit(Xq[tr][:, m], y[tr]).predict_proba(Xq[te][:, m])[:, 1]
+        probs["Quantum, 20 random features"][te] = rand_q_draws[:, te].mean(0)
+        for a in ALGORITHMS:
+            mask, fit, hist, evals = run_selector(a, Xq[tr], y[tr], groups[tr], k=K, budget=BUDGET, seed=SEED)
+            convergence[a].append(hist)
+            picked_q[a].append(np.where(mask)[0].tolist())
+            probs[f"Quantum + {a} selection (20)"][te] = \
+                logreg().fit(Xq[tr][:, mask], y[tr]).predict_proba(Xq[te][:, mask])[:, 1]
+            print(f"  {a:4s} (quantum pool) cv_fitness={fit:.3f} evals={evals}", flush=True)
         for name, Xq_in in [("Hybrid MLP: quantum + best selection", Xq),
                             ("Same MLP without quantum", np.zeros((len(y), 0)))]:
             runs = [mlp_predict(Xq_in, Xc[:, best_mask], y, tr, te, seed=sd) for sd in MLP_SEEDS]
@@ -118,6 +135,10 @@ def main():
             accs.append(accuracy_score(y, p >= .5))
         results[n]["image_accuracy_per_seed"] = [round(float(a), 4) for a in accs]
     results["_best_selector_per_fold"] = best_per_fold
+    draw_acc = [float(np.mean((d >= .5) == y)) for d in rand_q_draws]
+    results["Quantum, 20 random features"].update(
+        accuracy_per_random_draw={"mean": round(np.mean(draw_acc), 4), "std": round(np.std(draw_acc), 4),
+                                  "min": round(min(draw_acc), 4), "max": round(max(draw_acc), 4)})
     random_cv = cross_val_predict(logreg(), Xc, y, cv=StratifiedKFold(5, shuffle=True, random_state=SEED),
                                   method="predict_proba")[:, 1]
     results["(leaky) random image-level 5-fold CV, all features"] = summarise(y, random_cv, groups)
@@ -133,7 +154,8 @@ def main():
                 continue
             fh.write(f"\"{n}\"," + ",".join(str(r["per_scan_accuracy"][int(s)]) for s in scans)
                      + f",{r['image_accuracy']},{r['scans_correct']}\n")
-    (RESULTS / "selected_features_per_fold.json").write_text(json.dumps(picked))
+    (RESULTS / "selected_features_per_fold.json").write_text(
+        json.dumps({"classical_pool": picked, "quantum_pool": picked_q}))
 
     import matplotlib
     matplotlib.use("Agg")
@@ -144,7 +166,7 @@ def main():
         plt.plot(np.mean([h[:L] for h in hs], axis=0), label=a, lw=2)
     plt.xlabel("Iteration")
     plt.ylabel("Best inner-CV balanced accuracy")
-    plt.title(f"Feature-selection convergence (mean of 8 folds, {BUDGET} evals each)")
+    plt.title(f"Selecting 20 of 256 quantum features (mean of 8 folds, {BUDGET} evals each)")
     plt.legend()
     plt.grid(alpha=.3)
     plt.tight_layout()

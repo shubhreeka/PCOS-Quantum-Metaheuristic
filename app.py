@@ -38,10 +38,10 @@ def load_hybrid():
         model.load_state_dict(m["state_dict"])
         model.eval()
         members.append((model, {k: m[k].numpy() for k in ("mu_q", "sd_q", "mu_c", "sd_c")}))
-    return ckpt["selector"], members
+    return ckpt["classical_mask"].numpy(), members
 
 
-hybrid_selector, hybrid_members = load_hybrid()
+hybrid_mask, hybrid_members = load_hybrid()
 
 
 def looks_like_ultrasound(rgb):
@@ -116,8 +116,8 @@ def predict():
     c_feats = features.classical_features(enhanced[None], backbone)
     q_feats = q_extractor(features.small_gray(enhanced[None])).numpy()
     p_q = float(classifiers["quantum"].predict_proba(q_feats)[0, 1])
-    p_m = float(classifiers[algo].predict_proba(c_feats[:, masks[algo]])[0, 1])
-    sel = c_feats[:, masks[hybrid_selector]]
+    p_m = float(classifiers[algo].predict_proba(q_feats[:, masks[algo]])[0, 1])   # selected quantum features
+    sel = c_feats[:, hybrid_mask]
     p_h = float(np.mean([predict_hybrid(m, st, q_feats, sel)[0] for m, st in hybrid_members]))
 
     shown, n_blobs = dark_blobs(enhanced) if p_h >= 0.5 else (enhanced, 0)

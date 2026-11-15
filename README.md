@@ -38,9 +38,10 @@ augmented copies of every test scan are in the training data (see the audit belo
 3. **The quantum circuit is what makes it work.** The same network without the quantum branch gets 74.8%. With the
    same 64×64 input and pooling, the quanvolutional features reach **92.1%**, while raw pixels get 62.6% and the
    circuit **without its entangling CNOTs** gets 57.5%.
-4. **Metaheuristic feature selection overfits with this little data.** Selecting 20 of 1,280 features reaches
-   ~99% on the training scans, but on unseen scans it does no better than 20 random features. With only 7 training
-   scans there isn't enough signal to pick features reliably. In the hybrid, the quantum branch makes up for this.
+4. **Metaheuristic feature selection works when it selects from the quantum features.** Choosing 20 of the 256
+   quantum features, **GWO reaches 88.2%** (GA 86.0%, WOA 84.9%, FA 82.7%, PSO 82.1%), while 20 randomly chosen
+   quantum features average 75.1% ± 4.3% (best of 20 random draws: 82.2%). Selecting from the 1,280 MobileNetV2
+   features instead overfits the 7 training scans and does no better than random.
 
 ## Pipeline
 
@@ -60,6 +61,7 @@ Ultrasound ─► CLAHE contrast enhancement ─┬─► 64×64 gray ─► 4-q
 | 5 | [`05_figures.py`](05_figures.py) | Per-scan results figure |
 | 6 | [`06_external_test.py`](06_external_test.py) | Scores a folder of outside ultrasound images, after checking that none is a copy of a training scan |
 | 7 | [`07_quantum_ablation.py`](07_quantum_ablation.py) | Sensitivity of the quantum branch to resolution, pooling and regularisation |
+| 8 | [`08_selection_pool_study.py`](08_selection_pool_study.py) | Compares candidate pools and fitness functions for the metaheuristic selectors |
 
 ### The dataset audit
 
@@ -108,15 +110,43 @@ With 64×64 / 8×8, varying the regularisation C from 0.01 to 1.0 gives 89.0–9
 
 [`src/metaheuristic_opt.py`](src/metaheuristic_opt.py) implements PSO (Kennedy & Eberhart, 1995), GWO
 (Mirjalili et al., 2014), WOA (Mirjalili & Lewis, 2016), GA with tournament selection and elitism, and Firefly
-(Yang, 2008) as **wrapper feature selectors**. Each agent scores all 1,280 features and keeps the top 20.
+(Yang, 2008) as **wrapper feature selectors**. Each agent scores every candidate feature and keeps the top 20.
 
 - **Fitness:** balanced accuracy of logistic regression in **group-aware 3-fold CV over the training scans only**.
 - **Equal budget:** 300 unique fitness evaluations per algorithm.
+- **Candidate pool: the 256 quantum features.** This choice was made by comparing pools and fitness functions under
+  the same leave-one-scan-out test ([`08_selection_pool_study.py`](08_selection_pool_study.py), GA, unseen-scan accuracy):
+
+| Selector picks 20 features from | Fitness | Accuracy |
+|---|---|---|
+| 1,280 MobileNetV2 features | group-aware 3-fold CV | 71.3% |
+| 1,280 MobileNetV2 features | inner leave-one-scan-out | 58.0% |
+| MobileNetV2 + quantum (1,536) | group-aware 3-fold CV | 76.4% |
+| MobileNetV2 + quantum (1,536) | inner leave-one-scan-out | 79.1% |
+| **256 quantum features** | **group-aware 3-fold CV** | **86.0%** |
+
+With so few scans, a large pool of ImageNet features gives the search many ways to fit the training scans by
+chance. The quantum features are fewer and carry a stronger signal, so the search finds subsets that transfer.
+
+**Does the search beat chance?** Yes. Twenty random 20-feature subsets of the quantum features average
+**75.1% ± 4.3%** on unseen scans (range 67.3–82.2%):
+
+| Selector (20 of 256 quantum features) | Accuracy | ROC-AUC | Scans correct |
+|---|---|---|---|
+| Random subset (mean of 20 draws) | 75.1% | – | – |
+| PSO | 82.1% | 0.904 | 7/8 |
+| Firefly | 82.7% | 0.908 | 8/8 |
+| WOA | 84.9% | 0.913 | 8/8 |
+| GA | 86.0% | 0.947 | 8/8 |
+| **GWO** | **88.2%** | **0.949** | **8/8** |
+
+Four of the five selectors beat the best of the 20 random draws, and the 20 GWO-selected features keep most of
+the accuracy of all 256 (92.1%) with 13× fewer features.
 
 ![Convergence](results/convergence.png)
 
-*GA and GWO reach the highest training fitness. FA's curve is short because each FA iteration compares every pair of
-fireflies, so it uses its budget in few iterations.*
+*Best training-CV fitness per iteration, averaged over the 8 folds. FA's curve is short because each FA iteration
+compares every pair of fireflies, so it uses its budget in few iterations.*
 
 ## Results: leave-one-scan-out (8 folds, 1,921 images)
 
@@ -130,6 +160,12 @@ fireflies, so it uses its budget in few iterations.*
 | MobileNetV2 + WOA selection | 20 | 67.9% | 67.5% | 0.732 | 6/8 |
 | MobileNetV2 + GA selection | 20 | 71.3% | 72.3% | 0.838 | 5/8 |
 | MobileNetV2 + Firefly selection | 20 | 63.6% | 65.2% | 0.754 | 4/8 |
+| Quantum, 20 random features (ensemble of 20 draws) | 20 | 81.8% | 80.8% | 0.906 | 8/8 |
+| Quantum + PSO selection | 20 | 82.1% | 80.3% | 0.904 | 7/8 |
+| Quantum + Firefly selection | 20 | 82.7% | 82.1% | 0.908 | 8/8 |
+| Quantum + WOA selection | 20 | 84.9% | 84.1% | 0.913 | 8/8 |
+| Quantum + GA selection | 20 | 86.0% | 86.8% | 0.947 | 8/8 |
+| **Quantum + GWO selection** | 20 | **88.2%** | **87.2%** | **0.949** | **8/8** |
 | Control: raw 2×2 patch pixels | 256 | 62.6% | 61.4% | 0.658 | 5/8 |
 | Control: circuit without entanglement, cos(θ) | 256 | 57.5% | 56.8% | 0.586 | 4/8 |
 | **Quantum (quanvolution) features** | 256 | **92.1%** | **91.3%** | **0.976** | **8/8** |
@@ -165,7 +201,7 @@ python app.py        # http://127.0.0.1:5000
 
 Upload an ultrasound and choose a selector (PSO / GWO / WOA / GA / FA). The app shows:
 - the **final diagnosis from the hybrid model** (97.5% on unseen scans), an ensemble of the 5 seeds
-- the quantum and the metaheuristic branch predictions on their own, with confidence
+- the quantum branch and the metaheuristic branch (20 selected quantum features) on their own, with confidence
 - leave-one-scan-out metrics for each model
 - a rough outline of dark, round regions (often follicles) on positive cases
 
@@ -189,6 +225,7 @@ python 03_loso_evaluation.py    # ~15 min
 python 04_train_final.py
 python 05_figures.py
 python 07_quantum_ablation.py   # ~2 min
+python 08_selection_pool_study.py   # ~12 min
 python tests/test_quantum_equivalence.py   # needs pennylane
 ```
 The dataset and trained models are not stored in this repository.
@@ -198,8 +235,8 @@ The dataset and trained models are not stored in this repository.
   the most important next step.
 - The quantum circuit is fixed (not trained) and simulated classically. Next steps: trainable variational circuits
   and a run on real quantum hardware.
-- Feature selection needs more independent scans to beat random selection. Group-aware stability selection is a
-  natural next step.
+- Selecting from the 1,280 MobileNetV2 features still overfits. More independent scans, or stability selection
+  across folds, would be needed there.
 - **Research prototype, not a medical device.** Predictions must not be used for diagnosis.
 
 ## Author

@@ -26,8 +26,8 @@ if (fileInput) {
 
 async function changeAlgorithm() {
     const algo = document.getElementById('algo-select').value;
-    document.getElementById('meta-title').innerText = `Metaheuristic Extraction (${algo})`;
-    document.getElementById('meta-badge').innerText = `${algo} Pruning`;
+    document.getElementById('meta-title').innerText = `Metaheuristic · ${algo}`;
+    document.getElementById('meta-badge').innerText = `20 of 256 quantum`;
     await loadMetrics(algo);
 }
 
